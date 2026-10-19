@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TokoKita - Katalog Produk & Manajemen Produk</title>
+  <meta name="description" content="Aplikasi web interaktif dengan Fetch API dari DummyJSON dan Form Validation menggunakan DOM serta Event Handling JavaScript.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Header & Navigation -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="brand">
+        <div class="logo-icon">
+          <i class="fa-solid fa-store"></i>
+        </div>
+        <div>
+          <h1 class="brand-title">TokoKita<span>.id</span></h1>
+          <p class="brand-sub">Praktikum PAW — DOM, Events & Fetch API</p>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#katalog-section" class="nav-link active" id="nav-katalog">
+          <i class="fa-solid fa-boxes-stacked"></i> Katalog Produk
+        </a>
+        <a href="#form-section" class="nav-link" id="nav-form">
+          <i class="fa-solid fa-circle-plus"></i> Tambah Produk
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-section">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <i class="fa-solid fa-bolt"></i> Live API & DOM Manipulation
+      </div>
+      <h2>Eksplorasi Produk & Manajemen Interaktif</h2>
+      <p>Aplikasi web modern yang mengintegrasikan Fetch API untuk data produk DummyJSON secara real-time dan form manajemen produk dengan validasi dinamis DOM Event Handling.</p>
+      
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="total-count">0</span>
+          <span class="stat-label">Total Produk Ditampilkan</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="api-status">
+            <span class="status-dot"></span> Siap
+          </span>
+          <span class="stat-label">Status Fetch API</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="added-count">0</span>
+          <span class="stat-label">Produk Baru Ditambahkan</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Container -->
+  <main class="container main-content">
+
+    <!-- BAGIAN 1: FORM INTERAKTIF (DOM & EVENT HANDLING) -->
+    <section id="form-section" class="section-card">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-tag"><i class="fa-solid fa-pen-to-square"></i> Fitur 2: Form & Event Handling</span>
+          <h3 class="section-title">Form Tambah Produk Baru</h3>
+          <p class="section-desc">Isi form di bawah ini. Input dipantau secara real-time dengan validasi DOM Event Listener (<code>input</code>, <code>blur</code>, <code>submit</code>) dan live preview.</p>
+        </div>
+      </div>
+
+      <div class="form-preview-grid">
+        <!-- Form Elemen -->
+        <form id="product-form" class="custom-form" novalidate>
+          
+          <!-- Input Nama Produk -->
+          <div class="form-group" id="group-title">
+            <label for="product-title" class="form-label">
+              Nama Produk <span class="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-tag input-icon"></i>
+              <input 
+                type="text" 
+                id="product-title" 
+                name="title" 
+                class="form-control" 
+                placeholder="Contoh: Wireless Noise-Cancelling Headphones" 
+                autocomplete="off"
+              >
+            </div>
+            <div class="field-info">
+              <span class="error-feedback" id="title-error"></span>
+              <span class="char-counter" id="title-counter">0/60</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Input Harga -->
+            <div class="form-group" id="group-price">
+              <label for="product-price" class="form-label">
+                Harga ($ USD) <span class="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-dollar-sign input-icon"></i>
+                <input 
+                  type="number" 
+                  id="product-price" 
+                  name="price" 
+                  class="form-control" 
+                  placeholder="Contoh: 89.99" 
+                  step="0.01" 
+                  min="0.01"
+                >
+              </div>
+              <span class="error-feedback" id="price-error"></span>
+            </div>
+
+            <!-- Input Kategori -->
+            <div class="form-group" id="group-category">
+              <label for="product-category" class="form-label">
+                Kategori <span class="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-layer-group input-icon"></i>
+                <select id="product-category" name="category" class="form-control">
+                  <option value="">-- Pilih Kategori --</option>
+                  <option value="beauty">Beauty & Personal Care</option>
+                  <option value="fragrances">Fragrances</option>
+                  <option value="furniture">Furniture</option>
+                  <option value="groceries">Groceries</option>
+                  <option value="smartphones">Smartphones</option>
+                  <option value="laptops">Laptops & Gadgets</option>
+                  <option value="home-decoration">Home Decoration</option>
+                </select>
+              </div>
+              <span class="error-feedback" id="category-error"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <!-- Input Rating Awal -->
+            <div class="form-group" id="group-rating">
+              <label for="product-rating" class="form-label">
+                Rating Awal (1.0 - 5.0) <span class="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-star input-icon"></i>
+                <input 
+                  type="number" 
+                  id="product-rating" 
+                  name="rating" 
+                  class="form-control" 
+                  placeholder="Contoh: 4.8" 
+                  step="0.1" 
+                  min="1.0" 
+                  max="5.0"
+                >
+              </div>
+              <span class="error-feedback" id="rating-error"></span>
+            </div>
+
+            <!-- Input URL Gambar -->
+            <div class="form-group" id="group-image">
+              <label for="product-image" class="form-label">
+                URL Gambar Produk <span class="optional">(opsional)</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-image input-icon"></i>
+                <input 
+                  type="url" 
+                  id="product-image" 
+                  name="image" 
+                  class="form-control" 
+                  placeholder="https://images.unsplash.com/..."
+                >
+              </div>
+              <span class="error-feedback" id="image-error"></span>
+            </div>
+          </div>
+
+          <!-- Input Deskripsi -->
+          <div class="form-group" id="group-description">
+            <label for="product-description" class="form-label">
+              Deskripsi Produk <span class="required">*</span>
+            </label>
+            <div class="input-wrapper textarea-wrapper">
+              <textarea 
+                id="product-description" 
+                name="description" 
+                class="form-control textarea" 
+                rows="3" 
+                placeholder="Tuliskan spesifikasi atau keunggulan singkat produk..."
+              ></textarea>
+            </div>
+            <div class="field-info">
+              <span class="error-feedback" id="description-error"></span>
+              <span class="char-counter" id="description-counter">0/200</span>
+            </div>
+          </div>
+
+          <!-- Form Action Buttons -->
+          <div class="form-actions">
+            <button type="submit" id="btn-submit-product" class="btn btn-primary">
+              <i class="fa-solid fa-plus-circle"></i> Tambahkan ke Katalog
+            </button>
+            <button type="button" id="btn-reset-form" class="btn btn-secondary">
+              <i class="fa-solid fa-rotate-left"></i> Reset Form
+            </button>
+          </div>
+        </form>
+
+        <!-- Live Preview Card (Dinamis Di-update oleh Event Listener 'input') -->
+        <div class="preview-panel">
+          <div class="preview-header">
+            <h4><i class="fa-solid fa-eye"></i> Live Preview Produk</h4>
+            <span class="badge badge-info">Realtime DOM Update</span>
+          </div>
+
+          <div class="product-card preview-card" id="live-preview-card">
+            <div class="card-img-wrap">
+              <img id="preview-img" src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" alt="Preview Gambar">
+              <span class="card-badge" id="preview-badge">Kategori</span>
+            </div>
+            <div class="card-body">
+              <div class="card-rating" id="preview-rating">
+                <i class="fa-solid fa-star"></i> <span>5.0</span>
+              </div>
+              <h4 class="card-title" id="preview-title">Nama Produk Muncul Disini</h4>
+              <p class="card-desc" id="preview-desc">Deskripsi produk akan langsung terupdate saat Anda mengetik di formulir...</p>
+              <div class="card-footer">
+                <span class="card-price" id="preview-price">$0.00</span>
+                <span class="badge-source">Produk Baru</span>
+              </div>
+            </div>
+          </div>
+          <p class="preview-hint"><i class="fa-solid fa-circle-info"></i> Kartu di atas di-render secara dinamis menggunakan JavaScript DOM Event <code>input</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BAGIAN 2: KATALOG PRODUK (FETCH API DARI DUMMYJSON) -->
+    <section id="katalog-section" class="section-card">
+      <div class="section-header catalog-header">
+        <div class="section-title-wrap">
+          <span class="section-tag"><i class="fa-solid fa-cloud-arrow-down"></i> Fitur 1: Fetch API DummyJSON</span>
+          <h3 class="section-title">Katalog Produk</h3>
+          <p class="section-desc">Data diambil dari endpoint <code>https://dummyjson.com/products</code> menggunakan Fetch API.</p>
+        </div>
+
+        <!-- Toolbar: Search, Filter Kategori, & Reload API -->
+        <div class="catalog-toolbar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="search-input" placeholder="Cari nama produk..." autocomplete="off">
+            <button type="button" id="search-clear-btn" class="clear-btn" title="Hapus pencarian" style="display:none;">&times;</button>
+          </div>
+
+          <div class="filter-box">
+            <select id="category-filter" class="form-control select-filter">
+              <option value="all">Semua Kategori</option>
+            </select>
+          </div>
+
+          <button id="btn-reload-api" class="btn btn-outline" title="Refresh data dari API">
+            <i class="fa-solid fa-arrows-rotate"></i> Reload Data
+          </button>
+        </div>
+      </div>
+
+      <!-- State 1: Loading Skeleton -->
+      <div id="loading-state" class="loading-state">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <p>Sedang memuat data produk dari <strong>DummyJSON API</strong>...</p>
+        </div>
+        <div class="skeleton-grid">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+
+      <!-- State 2: Error State (dengan Tombol Coba Lagi) -->
+      <div id="error-state" class="error-state" style="display: none;">
+        <div class="error-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h4>Gagal Memuat Data Produk</h4>
+        <p id="error-message">Terjadi gangguan saat menghubungi server DummyJSON. Periksa koneksi internet Anda.</p>
+        <button id="btn-retry-fetch" class="btn btn-primary">
+          <i class="fa-solid fa-rotate-right"></i> Coba Ambil Data Lagi
+        </button>
+      </div>
+
+      <!-- State 3: Empty Search State -->
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <i class="fa-solid fa-box-open empty-icon"></i>
+        <h4>Tidak Ada Produk Ditemukan</h4>
+        <p>Coba kata kunci pencarian atau kategori lain.</p>
+        <button id="btn-reset-filter" class="btn btn-secondary">Reset Pencarian</button>
+      </div>
+
+      <!-- State 4: Products Grid (Diisi oleh DOM Manipulation) -->
+      <div id="products-grid" class="products-grid" style="display: none;">
+        <!-- Kartu produk akan di-generate via JavaScript DOM di sini -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p>&copy; 2026 <strong>TokoKita</strong>. Praktikum Pemrograman Aplikasi Web — Pertemuan 6 (JavaScript DOM, Event Handling, & Fetch API).</p>
+      <div class="tech-stack-badges">
+        <span class="tech-badge"><i class="fa-brands fa-html5"></i> Semantic HTML5</span>
+        <span class="tech-badge"><i class="fa-brands fa-css3-alt"></i> Modern CSS</span>
+        <span class="tech-badge"><i class="fa-brands fa-js"></i> Vanilla JavaScript</span>
+        <span class="tech-badge"><i class="fa-solid fa-bolt"></i> Fetch API</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Detail Product Modal -->
+  <div id="product-modal" class="modal-backdrop" style="display: none;">
+    <div class="modal-box">
+      <button id="modal-close-btn" class="modal-close" aria-label="Tutup modal">&times;</button>
+      <div class="modal-content" id="modal-content-body">
+        <!-- Rendered by DOM -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom JavaScript Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
